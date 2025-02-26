@@ -1,36 +1,35 @@
-// Import necessary modules
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../database/db.js'; // Import sequelize connection
+const { Sequelize, DataTypes } = require('sequelize');
+const sequelize = require('../database/db');
 
-// Define the User model
 const User = sequelize.define('Users', {
-  id: {
+  UserId: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  username: {
+  User_name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  User_email: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
   },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  password: {
+  Password: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  role: {
+  User_skintype: {
     type: DataTypes.STRING,
+  },
+  UserType: {
+    type: DataTypes.ENUM('user', 'admin'),
     defaultValue: 'user',
   },
 }, {
   tableName: 'users',
-  allowNull:true,
-  timestamps: true, // Automatically manage createdAt and updatedAt fields
+  timestamps: false,
 });
 
-export default User;
+module.exports = User;

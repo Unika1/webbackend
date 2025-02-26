@@ -1,11 +1,11 @@
-const User = require('../model/User')
+const User = require('../model/User').default
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const registerUser = async(req, res)=>{
-    const {username, password} = req.body;
+    const {fullname, email, password, isRole} = req.body;
     //validate username and password
-    if(!username || !password){
+    if(!username || !password ||!email ){
         return res.status(400).json({
             error: "Please Insert username and password"
         })

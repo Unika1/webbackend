@@ -31,7 +31,7 @@ router.use((req, res, next) => {
 router.get('/', getAllRemedies); // Get all remedies
 router.get('/category/:categoryId', getRemediesByCategory); // Get remedies by category
 router.get("/:id", getRemedyById);
-// ✅ Admin-protected routes
+// Admin-protected routes
 router.post("/", authenticate, isAdmin, multerUpload.single("image"), addRemedy); // Add a new remedy
 router.put("/:id", multerUpload.single("image"), updateRemedy); // Update a remedy
 router.delete("/:id", authenticate, isAdmin, deleteRemedy); // Delete a remedy

@@ -21,7 +21,7 @@ const storage = diskStorage({
 
 const multerUpload = multer({ storage });
 
-// ✅ Debugging log to confirm route is hit
+// Debugging log to confirm route is hit
 router.use((req, res, next) => {
   console.log(`🔵 Request received: ${req.method} ${req.originalUrl}`);
   next();

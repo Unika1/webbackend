@@ -4,7 +4,7 @@ const { verify, decode } = jwt;
 const authenticate = (req, res, next) => {
   const token = req.header('Authorization')?.split(" ")[1]; // Remove "Bearer "
   
-  console.log("🛂 Received Token:", token);
+  console.log("Received Token:", token);
 
   if (!token) {
     return res.status(401).json({ error: 'Access denied. No token provided.' });
@@ -12,15 +12,15 @@ const authenticate = (req, res, next) => {
 
   // Decode without verifying (to check if the token is correct)
   const decodedData = decode(token, { complete: true });
-  console.log("📜 Decoded Token:", decodedData);
+  console.log("Decoded Token:", decodedData);
 
   try {
     const decoded = verify(token, process.env.JWT_SECRET);
-    console.log("✅ Token Verified:", decoded);
+    console.log("Token Verified:", decoded);
     req.user = decoded;
     next();
   } catch (error) {
-    console.error("❌ Token Verification Failed:", error.message);
+    console.error("Token Verification Failed:", error.message);
     res.status(400).json({ error: 'Invalid token.' });
   }
 };

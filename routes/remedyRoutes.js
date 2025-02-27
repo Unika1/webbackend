@@ -27,7 +27,7 @@ router.use((req, res, next) => {
   next();
 });
 
-// ✅ Public routes (No authentication required)
+// Public routes (No authentication required)
 router.get('/', getAllRemedies); // Get all remedies
 router.get('/category/:categoryId', getRemediesByCategory); // Get remedies by category
 router.get("/:id", getRemedyById);

@@ -10,12 +10,12 @@ export const Review = sequelize.define("Review2", {
   remedyId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: "remedy_id"  // ✅ Fix: Ensure correct column name in DB
+    field: "remedy_id"  //  Fix: Ensure correct column name in DB
   },
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: "user_id"  // ✅ Fix: Ensure correct column name in DB
+    field: "user_id"  // Fix: Ensure correct column name in DB
   },
   username: {
     type: DataTypes.STRING,
@@ -29,10 +29,10 @@ export const Review = sequelize.define("Review2", {
   },
 }, {
   timestamps: true,
-  createdAt: "created_at",  // ✅ Fix: Ensure correct createdAt column name
-  updatedAt: "updated_at",  // ✅ Fix: Ensure correct updatedAt column name
-  tableName: "review2"  // ✅ Ensure Sequelize maps to correct DB table
+  createdAt: "created_at",  //  Fix: Ensure correct createdAt column name
+  updatedAt: "updated_at",  //  Fix: Ensure correct updatedAt column name
+  tableName: "review2"  //  Ensure Sequelize maps to correct DB table
 });
 
-// ✅ Sync model with DB
+//  Sync model with DB
 await Review.sync();

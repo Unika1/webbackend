@@ -4,8 +4,8 @@ import  User  from './model/User.js'; // Adjust the path to your User model
 const createAdmin = async () => {
   try {
     const username = "AdminUser1";
-    const email = "utnika@gmail.com";
-    const plainPassword = "123456"; // Choose a strong password
+    const email = "unika@gmail.com";
+    const plainPassword = "unika123"; // Choose a strong password
     const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
     // Check if the admin already exists

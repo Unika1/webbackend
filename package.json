@@ -9,6 +9,11 @@
     "dev": "nodemon index.js",
     "start": "node index.js"
   },
+  "jest": {
+    "transform": {
+      "^.+\\.[t|j]sx?$": "babel-jest"
+    }
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {

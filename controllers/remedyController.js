@@ -48,7 +48,7 @@ const updateRemedy = async (req, res) => {
   try {
     const remedy = await Remedy.findByPk(id);
     if (!remedy) {
-      console.log("❌ Remedy not found!");
+      console.log(" Remedy not found!");
       return res.status(404).json({ error: "Remedy not found" });
     }
 
@@ -59,10 +59,10 @@ const updateRemedy = async (req, res) => {
     remedy.image = image || remedy.image;
 
     await remedy.save();
-    console.log("✅ Remedy updated successfully!");
+    console.log("Remedy updated successfully!");
     res.json(remedy);
   } catch (error) {
-    console.error("❌ Error updating remedy:", error);
+    console.error(" Error updating remedy:", error);
     res.status(500).json({ error: "Failed to update remedy", details: error.message });
   }
 };
@@ -70,21 +70,21 @@ const updateRemedy = async (req, res) => {
 // Delete a remedy
 const deleteRemedy = async (req, res) => {
   const { id } = req.params;
-  console.log(`🔴 Attempting to delete remedy with ID: ${id}`);
+  console.log(` Attempting to delete remedy with ID: ${id}`);
 
   try {
     const remedy = await Remedy.findByPk(id);
     
     if (!remedy) {
-      console.log("❌ Remedy not found in DB!");
+      console.log(" Remedy not found in DB!");
       return res.status(404).json({ error: "Remedy not found" });
     }
 
     await remedy.destroy();
-    console.log("✅ Remedy deleted successfully");
+    console.log("Remedy deleted successfully");
     return res.json({ message: "Remedy deleted successfully" });
   } catch (error) {
-    console.error("❌ Error in deleteRemedy:", error);
+    console.error(" Error in deleteRemedy:", error);
     return res.status(500).json({ error: "Failed to delete remedy", details: error.message });
   }
 };

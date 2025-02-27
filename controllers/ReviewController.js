@@ -41,11 +41,11 @@ export const deleteReview = async (req, res) => {
     const { id } = req.params;
     const { userId } = req.query;  // Extract userId from query params
 
-    console.log("🔵 Received delete request - Review ID:", id, "User ID:", userId);
+    console.log("Received delete request - Review ID:", id, "User ID:", userId);
 
-    if (!userId) {
-      return res.status(400).json({ error: "User ID is required" });
-    }
+    // if (!userId) {
+    //   return res.status(400).json({ error: "User ID is required" });
+    // }
 
     const review = await Review.findByPk(id);
 

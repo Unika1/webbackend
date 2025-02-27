@@ -3,7 +3,7 @@ const { registerUser, loginUser } = userController;
 import { User } from '../model/User.js'; // Assuming User is being imported correctly
 
 // Mocking User methods
-jest.mock('../model/User');
+jest.mock('../model/User.js');
 User.findOne = jest.fn();
 User.create = jest.fn();
 

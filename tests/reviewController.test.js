@@ -1,4 +1,4 @@
-import { addReview, getReviews, deleteReview, updateReview } from '../controllers/reviewController.js';
+import { addReview, getReviews, deleteReview, updateReview } from '../controllers/ReviewController.js';
 import { create as _create, findAll as _findAll, findByPk as _findByPk, destroy as _destroy } from '../model/Review.js';
 
 // Mock Sequelize Methods

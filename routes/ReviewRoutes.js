@@ -4,7 +4,7 @@ import { addReview, getReviews, deleteReview , updateReview} from "../controller
 const router = express.Router();
 
 router.post("/", addReview);  // ✅ POST route for submitting reviews
-router.get("/:remedyId", getReviews);  // ✅ GET route to fetch reviews
+router.get("/:remedyId", getReviews);  // GET route to fetch reviews
 router.delete("/:id", deleteReview);  
 router.put("/:id", updateReview);
 export default router;

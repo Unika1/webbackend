@@ -1,5 +1,5 @@
-const request = require('supertest');
-const app = require('../server'); // Import Express app
+import request from 'supertest';
+import app from '../server'; // Import Express app
 
 describe('User API Endpoints', () => {
   let userId;

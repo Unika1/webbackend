@@ -1,9 +1,9 @@
-const User = require('../model/User').default
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+import User from '../model/User';
+import { sign } from 'jsonwebtoken';
+import { hash, compare } from 'bcrypt';
 
 const registerUser = async(req, res)=>{
-    const {fullname, email, password, isRole} = req.body;
+    const {username,fullname, email, password, isRole} = req.body;
     //validate username and password
     if(!username || !password ||!email ){
         return res.status(400).json({
@@ -20,7 +20,7 @@ const registerUser = async(req, res)=>{
            
         }
         const saltRound = 10;
-        const hashpassword = await bcrypt.hash(password, saltRound)
+        const hashpassword = await hash(password, saltRound)
 
         const newUser = await User.create({username, password: hashpassword});
         res.status(200).json({message: "Registartion Successful....."});
@@ -48,14 +48,14 @@ const loginUser = async(req, res) =>{
                 error: "New user required"
             })
         }
-        const isMatch = await bcrypt.compare(password, user.password)
+        const isMatch = await compare(password, user.password)
         if(!isMatch){
             return res.status(400).json({
                 error: "Insert proper password!!!!"
             })
         }
-        const token = jwt.sign(
-            {id: user.username, username: user.username},
+        const token = sign(
+            {id: user.id, username: user.username},
             process.env.JWT_SECRET || 'FVHJAFJHSFVBSFBSSFJSF',
             {expiresIn: '24h'}
 
@@ -72,4 +72,4 @@ const loginUser = async(req, res) =>{
     }
 
 }
-module.exports = {registerUser, loginUser}
+export default {registerUser, loginUser}

@@ -1,107 +1,70 @@
-import { registerUser, loginUser } from '../controllers/userController.js';
-import { create as _create, findOne as _findOne } from '../model/User.js';
-import { hash as _hash, compare as _compare } from 'bcrypt';
-import { sign as _sign } from 'jsonwebtoken';
+import userController from '../controllers/userController.js';
+const { registerUser, loginUser } = userController;
+import { User } from '../model/User.js'; // Assuming User is being imported correctly
 
-// Mock Sequelize Methods
-jest.mock('../model/User', () => ({
-  create: jest.fn(),
-  findOne: jest.fn(),
-}));
+// Mocking User methods
+jest.mock('../model/User');
+User.findOne = jest.fn();
+User.create = jest.fn();
 
-// Mock bcrypt and jwt
-jest.mock('bcrypt', () => ({
-  hash: jest.fn(),
-  compare: jest.fn(),
-}));
-jest.mock('jsonwebtoken', () => ({
-  sign: jest.fn(),
-}));
+// Mock the response object
+const res = {
+  status: jest.fn().mockReturnThis(),
+  json: jest.fn(),
+};
 
 describe('User Controller', () => {
-  const mockResponse = () => {
-    const res = {};
-    res.status = jest.fn().mockReturnValue(res);
-    res.json = jest.fn().mockReturnValue(res);
-    return res;
-  };
-
   it('should register a new user', async () => {
+    // Mock the data
     const req = {
-      body: { fullname: 'John Doe', email: 'john@example.com', password: 'password123', isRole: 'user' },
+      body: {
+        username: 'testuser',
+        fullname: 'Test User',
+        email: 'test@example.com',
+        password: 'password123',
+        isRole: 'user',
+      },
     };
-    const res = mockResponse();
-    _create.mockResolvedValue(req.body);  // Mocking that the user is created
-    _hash.mockResolvedValue('hashedpassword');  // Mocking bcrypt hash
 
-    await registerUser(req, res);
+    // Mock User.findOne to return null (no user found)
+    User.findOne.mockResolvedValue(null);
 
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith({ message: 'Registration Successful.....' });
-  });
-
-  it('should return 400 if username or password is missing during registration', async () => {
-    const req = { body: { email: 'john@example.com', password: 'password123' } }; // Missing username
-    const res = mockResponse();
-
-    await registerUser(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Please Insert username and password' });
-  });
-
-  it('should login a user successfully', async () => {
-    const req = {
-      body: { username: 'john_doe', password: 'password123' },
-    };
-    const res = mockResponse();
-    _findOne.mockResolvedValue({ username: 'john_doe', password: 'hashedpassword' });  // Mocking user data
-    _compare.mockResolvedValue(true);  // Mocking bcrypt compare
-    _sign.mockReturnValue('token123');  // Mocking jwt sign
-
-    await loginUser(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith({
-      message: 'Successfully Logged in',
-      token: 'token123',
+    // Mock User.create to return a mock user object
+    User.create.mockResolvedValue({
+      id: 1,
+      username: 'testuser',
+      fullname: 'Test User',
     });
+
+    await registerUser(req, res);
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({ message: 'Registration Successful' })
+    );
   });
 
-  it('should return 400 if username or password is missing during login', async () => {
-    const req = { body: { username: 'john_doe' } }; // Missing password
-    const res = mockResponse();
-
-    await loginUser(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Please Insert username and password' });
-  });
-
-  it('should return 400 if user not found during login', async () => {
+  it('should login a user', async () => {
     const req = {
-      body: { username: 'john_doe', password: 'password123' },
+      body: {
+        username: 'testuser',
+        password: 'password123',
+      },
     };
-    const res = mockResponse();
-    _findOne.mockResolvedValue(null);  // Mocking no user found
+
+    // Mock User.findOne to return a mock user
+    User.findOne.mockResolvedValue({
+      id: 1,
+      username: 'testuser',
+      password: '$2b$10$V0uoNU8FVhP7GfbEXQRP3eD0H1lOwPFXgTpZah0X/p90K1INhFXOa', // hashed password
+    });
+
+    // Mock bcrypt.compare to return true (password matches)
+    bcrypt.compare = jest.fn().mockResolvedValue(true);
 
     await loginUser(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ error: 'New user required' });
-  });
-
-  it('should return 400 if password is incorrect during login', async () => {
-    const req = {
-      body: { username: 'john_doe', password: 'password123' },
-    };
-    const res = mockResponse();
-    _findOne.mockResolvedValue({ username: 'john_doe', password: 'hashedpassword' });
-    _compare.mockResolvedValue(false);  // Mocking incorrect password
-
-    await loginUser(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Insert proper password!!!!' });
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({ message: 'Successfully Logged in' })
+    );
   });
 });

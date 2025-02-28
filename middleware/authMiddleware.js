@@ -25,7 +25,7 @@ const authenticate = (req, res, next) => {
   }
 };
 const isAdmin = (req, res, next) => {
-  console.log("👤 User Data:", req.user); // Debugging line
+  console.log(" User Data:", req.user); // Debugging line
 
   if (!req.user.role) {
     return res.status(403).json({ error: "Access denied. Role not found in token." });

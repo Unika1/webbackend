@@ -5,7 +5,7 @@ import { hash, compare } from 'bcrypt';
 const registerUser = async(req, res)=>{
     const {username,fullname, email, password, isRole} = req.body;
     //validate username and password
-    if(!username || !password ||!email ){
+    if(!username || !password ||!email||!fullname){
         return res.status(400).json({
             error: "Please Insert username and password"
         })

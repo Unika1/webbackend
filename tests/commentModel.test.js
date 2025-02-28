@@ -1,4 +1,4 @@
-const SequelizeMock = require('sequelize-mock');
+import SequelizeMock from 'sequelize-mock';
 const dbMock = new SequelizeMock();
 
 // Define the mock Comment model with basic attributes and validations

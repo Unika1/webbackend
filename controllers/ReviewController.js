@@ -22,8 +22,6 @@ export const addReview = async (req, res) => {
   }
 };
 
-
-
 // Get reviews for a remedy
 export const getReviews = async (req, res) => {
   try {
